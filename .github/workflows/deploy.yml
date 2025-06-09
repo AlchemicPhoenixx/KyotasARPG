@@ -1,0 +1,21 @@
+name: Deploy on Push
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH & Pull Latest Code
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/kyotasarpg.com
+            sudo git pull origin main
+            sudo docker compose down
+            sudo docker compose up -d --build
