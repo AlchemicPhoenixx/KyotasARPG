@@ -28,7 +28,9 @@ Important: For those who are not familiar with web dev, please refer to the [Wik
 ## Obtain a copy of the code
 
 ```
-$ git clone https://github.com/corowne/lorekeeper.git
+$ git clone https://github.com/lk-arpg/lorekeeper.git
+$ git add remote ashtr3 https://github.com/ashtr3/lorekeeper.git
+$ git merge ashtr3/extension/docker
 ```
 
 ## Configure .env in the directory
@@ -45,29 +47,61 @@ CONTACT_ADDRESS=(contact email address)
 DEVIANTART_ACCOUNT=(username of ARPG group account)
 ```
 
+## Configure site.conf in the nginx directory
+
+```
+$ cp nginx/default.conf nginx/site.conf
+```
+
+You should update the server_name to match your site's domain name in the new site.conf file. If this container is being ran locally, you can keep this as `localhost`. 
+
+```
+server {
+    listen 80;
+    server_name (your domain name);
+    ...
+```
+
+## Initialize the docker container
+
+```
+$ docker compose up -d --build
+```
+
+## Update filesystem permissions
+
+```
+$ docker compose exec app chown -R www-data:www-data /var/www/html/storage
+$ docker compose exec app chown -R www-data:www-data /var/www/html/bootstrap/cache
+$ docker compose exec app chmod -R 755 /var/www/html/storage
+$ docker compose exec app chmod -R 755 /var/www/html/bootstrap/cache
+```
+
+These changes will enable the nginx user to create necessary changes to the `storage` and `bootstrap/cache` directories. This is required for log files.
+
 ## Setting up
 
 Composer install:
 ```
-$ composer install
+$ docker compose exec app composer install
 ```
 
 Generate app key and run database migrations:
 ```
-$ php artisan key:generate 
-$ php artisan migrate
+$ docker compose exec app php artisan key:generate 
+$ docker compose exec app php artisan migrate
 ```
 
 Add basic site data:
 ```
-$ php artisan add-site-settings
-$ php artisan add-text-pages
-$ php artisan copy-default-images
+$ docker compose exec app php artisan add-site-settings
+$ docker compose exec app php artisan add-text-pages
+$ docker compose exec app php artisan copy-default-images
 ```
 
 Finally, set up the admin account for logging in:
 ```
-$ php artisan setup-admin-user
+$ docker compose exec app php artisan setup-admin-user
 ```
 
 You will need to send yourself the verification email and then link your social media account as prompted.
