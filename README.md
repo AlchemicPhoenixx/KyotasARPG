@@ -29,7 +29,8 @@ Important: For those who are not familiar with web dev, please refer to the [Wik
 
 ```
 $ git clone https://github.com/lk-arpg/lorekeeper.git
-$ git add remote ashtr3 https://github.com/ashtr3/lorekeeper.git
+$ git remote add ashtr3 https://github.com/ashtr3/lorekeeper.git
+$ git fetch ashtr3
 $ git merge ashtr3/extension/docker
 ```
 
