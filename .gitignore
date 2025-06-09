@@ -1,4 +1,5 @@
 /nginx/site.conf
+/nginx/ssl/*
 /node_modules
 /public/hot
 /public/storage
