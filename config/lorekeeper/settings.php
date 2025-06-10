@@ -63,7 +63,7 @@ return [
     | will still work provided users link the relevant alias(es).
     |
     */
-    'require_alias'                                     => 1,
+    'require_alias'                                     => 0,
 
     /*
     |--------------------------------------------------------------------------
